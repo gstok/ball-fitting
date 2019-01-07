@@ -116,5 +116,22 @@ class softmaxLoss:
             dx /= batchSize;
         return dx;
 
+# 半径平方层
+class radiusSquare:
+    def __init__ (self):
+        self.mask = None;
+    def forward (self, x):
+        inX = x.copy();
+        if (inX.ndim == 1):
+            inX = np.array([ inX ]);
+        self.mask = np.ones(inX.shape);
+        inX = inX.transpose((1, 0));
+        self.mask = self.mask.transpose((1, 0));
+        self.mask[0] = inX[0];
+        inX = inX.transpose((1, 0));
+        self.mask = self.mask.transpose((1, 0));
+        return inX * self.mask;
+    def backward (self, d):
+        return d * self.mask;
 
 

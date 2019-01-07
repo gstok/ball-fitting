@@ -18,6 +18,8 @@ class bpNet:
         self.initParams();
         self.hiddenLayers = None;
         self.initHiddenLayers();
+        self.lastLayer = None;
+        self.initOutputLayer();
 
     # 使用神经网络进行预测
     # 此方法没有调用输出层，即没有调用softmax以及损失函数
@@ -27,6 +29,15 @@ class bpNet:
             y = layer.forward(y);
         return y;
 
+    # 根据输入数据以及监督数据计算损失函数
+    # 同时也会对神经网络进行一次整体数据流动
+    def loss (self, x):
+        y = self.predict(x);
+        return self.lastLayer.forward(y);
+
+    # 构建输出层
+    def initOutputLayer (self):
+        self.lastLayer = radiusSquare();
     # 根据初始化的参数顺序构建隐藏层（包含输入层）
     def initHiddenLayers (self):
         self.hiddenLayers = [];
